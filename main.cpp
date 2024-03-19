@@ -1,9 +1,14 @@
+#include "server.h"
+
+
 #include <iostream>
+#include <winsock2.h>
+#include <ws2tcpip.h>
 
 
 int main()
 {
-	std::cout<<"hello world"<<std::endl;
+	server new_server;
 	return 0;
 }
 
