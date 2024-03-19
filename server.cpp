@@ -1,15 +1,14 @@
 #include "server.h"
-#include <winsock2.h>
+//#include <winsock2.h>
 
 server::server()
 {
-	std::cout<<"Hello World"<<std::endl;
+	// The winsock is initialised here
 	init_winsock();
 }
 
 server::~server()
 {
-	std::cout<<"Bye World"<<std::endl;
 }
 
 
@@ -17,6 +16,8 @@ int server::init_winsock()
 {
 	int init_res;
 
+	//WSAStartup function is called to initiate use of WS2_32.dll
+	//It also returns a integer value and check for errors
 	init_res = WSAStartup(MAKEWORD(2,2), &wsaData);
 
 	if(init_res !=0)
