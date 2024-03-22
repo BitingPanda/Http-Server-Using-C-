@@ -15,14 +15,22 @@ server::server()
 {
 	// The winsock is initialised here
 	init_winsock();
+	
+	//This is a wrapper for the getaddr function
 	init_getaddrinfo();
+
+	//This would create the socket
 	init_socket();
+
+	//This function is called to bind the socket
+	bind_socket();
 }
 
 
 server::~server()
 {
 	freeaddrinfo(result);
+	closesocket(listen_sock);
 	WSACleanup();
 }
 
@@ -91,3 +99,26 @@ int server::init_socket()
 	return 0;
 
 }
+
+//This is a wrapper for the bind function
+int server::bind_socket()
+{
+	//Setting up the TCP listening socket
+	int init_res = bind(listen_sock, result->ai_addr,(int)result->ai_addrlen);
+
+	//This is for fault tolerance
+	if(init_res == SOCKET_ERROR)
+	{
+		std::cout<<"Bind failed with error: "<< WSAGetLastError()<<std::endl;
+		freeaddrinfo(result);
+		closesocket(listen_sock);
+		WSACleanup();
+		return 1;
+	}
+
+	std::cout<< "Binding Successful"<<std::endl;
+	freeaddrinfo(result);
+	return 0;
+}
+
+

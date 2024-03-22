@@ -20,6 +20,12 @@ A simple HTTP server using C++ and Winsock. This is a beginner project intended 
 
 ### Commit Details
 
+##### Binded The Socket
+- Binded the socket with the address which was picked up using getaddrinfo function
+- After binding, the getaddrinfo function is no longer needed.
+- The freeaddrinfo function is called to free the memory allocated by the getaddrinfo function for this address information.
+- Added Documentation for all this
+
 ##### Created a socket
 - Created a wrapper for using getaddrinfo function which provides protocol-independent translation from an ANSI host name to an address.
 - Created a socket which the client will listen for connection with fault tolerance

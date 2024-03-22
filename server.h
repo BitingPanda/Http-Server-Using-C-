@@ -31,4 +31,7 @@ class server
 
 		// This function calls the socket function and ensures a valid socket
 		int init_socket();
+
+		//This function is called to bind the socket to an address
+		int bind_socket();
 };
