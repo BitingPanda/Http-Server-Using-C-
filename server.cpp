@@ -4,7 +4,6 @@
 //This are the headers for winsock
 #include <winsock2.h>
 #include <ws2tcpip.h>
-//#include <winsock2.h>
 
 
 
@@ -13,6 +12,8 @@
 
 server::server()
 {
+	//This would show the port number to copy
+	port_view();
 	// The winsock is initialised here
 	init_winsock();
 	
@@ -24,6 +25,13 @@ server::server()
 
 	//This function is called to bind the socket
 	bind_socket();
+
+	//This would start listening the socket
+	listen_socket();
+
+
+	//This would accept the connection
+	accept_connection();
 }
 
 
@@ -121,4 +129,42 @@ int server::bind_socket()
 	return 0;
 }
 
+int server::listen_socket()
+{
+	//This listen function will listen to the socket created
+	if( listen( listen_sock, SOMAXCONN) == SOCKET_ERROR)
+	{
+		std::cout<< "Listen failed with error: "<<WSAGetLastError()<<std::endl;
+		closesocket(listen_sock);
+		WSACleanup();
+		return 1;
+	}
 
+	std::cout<< "Listening..." << std::endl;
+	return 0;
+}
+
+
+int server::accept_connection()
+{
+	client_sock = INVALID_SOCKET;
+
+	//Accept a client sock
+	client_sock = accept(listen_sock, NULL, NULL);
+	
+	if(client_sock == INVALID_SOCKET)
+	{
+		std::cout<< "Accept Failed: "<< WSAGetLastError()<<std::endl;
+		closesocket(listen_sock);
+		WSACleanup();
+		return 1;
+	}
+
+	std::cout<< "Connection Accepted!" <<std::endl;
+	return 0;
+}
+
+void server::port_view()
+{
+	std::cout<< "http://localhost:"<< DEFAULT_PORT << "/"<<std::endl;
+}

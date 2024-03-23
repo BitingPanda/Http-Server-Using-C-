@@ -20,6 +20,12 @@ A simple HTTP server using C++ and Winsock. This is a beginner project intended 
 
 ### Commit Details
 
+##### Listening to socket and Accepting Client Connection
+- Starts Listening to the socket using the listen function
+- Creates a Client socket
+- Accepts the client socket when went into the url
+- Created a port view to view the URL in terminal
+
 ##### Binded The Socket
 - Binded the socket with the address which was picked up using getaddrinfo function
 - After binding, the getaddrinfo function is no longer needed.

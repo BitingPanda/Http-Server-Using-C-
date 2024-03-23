@@ -34,4 +34,17 @@ class server
 
 		//This function is called to bind the socket to an address
 		int bind_socket();
+
+
+		//This would create a wrapper on the listen function
+		int listen_socket();
+
+		//This would accept the connection
+		int accept_connection();
+
+		//This is the client socket
+		SOCKET client_sock;
+
+		//This would show the port (Extra)
+		void port_view();
 };
