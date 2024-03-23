@@ -1,17 +1,22 @@
 #include "server.h"
+#include <fstream>
 #include <iostream>
 
 //This are the headers for winsock
+#include <sstream>
+#include <string>
 #include <winsock2.h>
+#include <winuser.h>
 #include <ws2tcpip.h>
 
+//#include <shellapi.h>
 
 
-//This is the port number which the client number connect to
-#define DEFAULT_PORT "27015"
 
 server::server()
 {
+	//This would hide the cursor for looking better (Optional)
+	hideCursor();
 	//This would show the port number to copy
 	port_view();
 	// The winsock is initialised here
@@ -29,16 +34,25 @@ server::server()
 	//This would start listening the socket
 	listen_socket();
 
+	//This would open the port on the browser
+	port_open();
 
 	//This would accept the connection
 	accept_connection();
+
+	//This send the data which is a HTML file with the HTTP request
+	send_data();
+
+	//This would show the cursor (Optional)
+	showCursor();
 }
 
-
+//This would clean up everything upon deletion of the server object
 server::~server()
 {
 	freeaddrinfo(result);
 	closesocket(listen_sock);
+	closesocket(client_sock);
 	WSACleanup();
 }
 
@@ -125,6 +139,8 @@ int server::bind_socket()
 	}
 
 	std::cout<< "Binding Successful"<<std::endl;
+
+	//Frees up the result pointer
 	freeaddrinfo(result);
 	return 0;
 }
@@ -139,19 +155,24 @@ int server::listen_socket()
 		WSACleanup();
 		return 1;
 	}
+	
+	std::cout<<"Listening..."<<std::endl;
+	
+	//loading_animation() would replace the static output
+	//This is buggy as of now
+	//loading_animation();
 
-	std::cout<< "Listening..." << std::endl;
 	return 0;
 }
 
-
+//This would accpet the connection
 int server::accept_connection()
 {
-	client_sock = INVALID_SOCKET;
 
 	//Accept a client sock
 	client_sock = accept(listen_sock, NULL, NULL);
 	
+	//This would create a fault tolerance for accepting the connection
 	if(client_sock == INVALID_SOCKET)
 	{
 		std::cout<< "Accept Failed: "<< WSAGetLastError()<<std::endl;
@@ -164,7 +185,35 @@ int server::accept_connection()
 	return 0;
 }
 
-void server::port_view()
+
+int server::send_data()
 {
-	std::cout<< "http://localhost:"<< DEFAULT_PORT << "/"<<std::endl;
+	//This block would read content from the html file
+	std::ifstream file("index.html");
+	std::stringstream buffer;
+	buffer<<file.rdbuf();
+	std::string content = buffer.str();
+
+	//Construct HTTP response with the HTML page
+	std::string http_response = "HTTP/1.1 200 OK\r\n";
+	http_response += "Content-Type: text/html\r\n";
+	http_response += "Content-Length: " + std::to_string(content.size())+ "\r\n\r\n";
+	http_response += content;
+
+
+	//This sends the data to the client
+	int send_result = send(client_sock, http_response.c_str(), http_response.size(),0);
+	
+	//Creates Fault tolerence for Sending Data
+	if(send_result == SOCKET_ERROR)
+	{
+		std::cout<<"Send Failed: "<< WSAGetLastError()<<std::endl;
+		closesocket(client_sock);
+		WSACleanup();
+		return 1;
+	}
+
+	std::cout<< "Sending Successful!"<<std::endl;
+	return 0;
+	
 }

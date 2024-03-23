@@ -2,9 +2,8 @@
 
 int main()
 {
-	server* main_serv = new server;
 
-	delete main_serv;
+	server main;
 	return 0;
 }
 

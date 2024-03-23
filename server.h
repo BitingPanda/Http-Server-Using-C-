@@ -1,10 +1,19 @@
 #pragma once
 
 #include <iostream>
+
 //For Winsock
+#include <string>
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#include <Windows.h>
 
+//This is for file reading and writing
+#include <fstream>
+
+//Macro
+//This is the port number which the client number connect to
+#define DEFAULT_PORT "27015"
 
 class server
 {
@@ -43,8 +52,30 @@ class server
 		int accept_connection();
 
 		//This is the client socket
-		SOCKET client_sock;
+		SOCKET client_sock = INVALID_SOCKET;
 
 		//This would show the port (Extra)
 		void port_view();
+
+
+		//This stores the url in a string (Extra)
+		std::string url;
+
+		//This would open the port in a browser(Extra)
+		void port_open();
+
+		//This is the loading animation(Extra)
+		void loading_animation();
+
+
+		//These would hide and show the cursor(Extra)
+		void hideCursor();
+		void showCursor();
+
+
+		//This function would create functionality to send data
+		int send_data();
 };
+
+
+

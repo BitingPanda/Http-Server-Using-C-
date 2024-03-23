@@ -7,6 +7,7 @@ add_executable(http
     main.cpp
     server.h
     server.cpp
+    server_extra.cpp
 )
 
 if(WIN32)
