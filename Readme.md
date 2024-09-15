@@ -98,4 +98,3 @@ This is only for windows as some of the components used are Windows only
 ##### Initial Commit
 - Created all the boiler plate for the project including the main file and the Cmake file to build the source.
 
-
