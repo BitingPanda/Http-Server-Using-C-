@@ -5,13 +5,34 @@ This would be a great start to learn how to make an HTTP server that outputs a b
 
 
 #### Contents
+- [Building](#building)
 - [Technologies Used](#technologies-used)
 - [Commit Details](#commit-details)
-- [Building](#building)
 
 
 #### Prerequisites 
 This is only for windows as some of the components used are Windows only
+
+---
+### Building
+
+- First the build files have to be generated using cmake. Here MinGW used
+, MinGW build files are generated using the `-G` flag and specified the build folder using `-B` flag
+
+    ```powershell
+    cmake -G "MinGW Makefiles" -B .\build\
+    ```
+
+<br>
+
+- Then the executable have to be built using this:
+    
+    ```powershell
+    cmake --build .\build\
+    ```
+<br>
+
+:warning:*Here the build folder is `.\build`*
 
 ---
 
@@ -79,22 +100,3 @@ This is only for windows as some of the components used are Windows only
 
 
 ---
-### Building
-
-- First the build files have to be generated using cmake. Here MinGW used
-, MinGW build files are generated using the `-G` flag and specified the build folder using `-B` flag
-
-    ```powershell
-    cmake -G "MinGW Makefiles" -B .\build\
-    ```
-
-<br>
-
-- Then the executable have to be built using this:
-    
-    ```powershell
-    cmake --build .\build\
-    ```
-<br>
-
-:warning:*Here the build folder is `.\build`*
